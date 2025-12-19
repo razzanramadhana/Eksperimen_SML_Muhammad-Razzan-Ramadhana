@@ -247,11 +247,15 @@ if __name__ == "__main__":
 
     df = pd.read_csv(raw_path)
 
-    preprocessor = LoanPreprocessor()
-    df_processed = preprocessor.fit_transform(df)
+    preprocessor = LoanPreprocessor().fit(df)
+
+    # hasil transform mengembalikan (X, y)
+    X, y = preprocessor.transform(df, target_col="Loan_Status", return_y=True)
+
+    # satukan lagi jadi satu dataset siap latih (fitur + target)
+    df_processed = X.copy()
+    df_processed["Loan_Status"] = y
 
     df_processed.to_csv(output_path, index=False)
-
-    print("✅ Preprocessing selesai. Dataset siap latih tersimpan.")
-
+    print(f"✅ Preprocessing selesai. Output: {output_path}")
 
