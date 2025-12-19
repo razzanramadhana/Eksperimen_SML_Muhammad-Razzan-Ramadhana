@@ -195,7 +195,7 @@ class LoanPreprocessor:
 
         # 8. Is_Single
         if {"Married", "Dependents"}.issubset(df_.columns):
-            df_["Is_Single"] = ((df_["Married"] == 0) & (df_["Dependents"] == 0)).astype(int)
+            df_["is_Single"] = ((df_["Married"] == 0) & (df_["Dependents"] == 0)).astype(int)
 
         # -----------------------------
         # 8) Final: siapkan X (numerik)
