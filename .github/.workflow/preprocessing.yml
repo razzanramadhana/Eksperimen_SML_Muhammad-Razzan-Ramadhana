@@ -1,0 +1,38 @@
+name: Automated Preprocessing Pipeline
+
+on:
+  push:
+    paths:
+      - "loan-dataset_raw/**"
+      - "preprocessing/**"
+      - ".workflow/**"
+
+jobs:
+  preprocessing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy scikit-learn
+
+      - name: 🔄 Run preprocessing
+        run: |
+          python preprocessing/automate_Muhammad-Razzan-Ramadhana.py
+
+      - name: 📤 Commit processed dataset
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add preprocessing/namadataset_preprocessing/loan_processed.csv
+          git commit -m "Auto-update processed dataset" || echo "No changes to commit"
+          git push
